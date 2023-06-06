@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Button } from "~/components/ui/button";
+import { Button } from "../../../../../../WebstormProjects/next-app-router-trpc-drizzle-planetscale-edge/src/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -15,11 +15,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "~/components/ui/dialog";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
-import { Textarea } from "~/components/ui/textarea";
-import { api } from "~/lib/api/client";
+} from "../../../../../../WebstormProjects/next-app-router-trpc-drizzle-planetscale-edge/src/components/ui/dialog";
+import { Input } from "../../../../../../WebstormProjects/next-app-router-trpc-drizzle-planetscale-edge/src/components/ui/input";
+import { Label } from "../../../../../../WebstormProjects/next-app-router-trpc-drizzle-planetscale-edge/src/components/ui/label";
+import { Textarea } from "../../../../../../WebstormProjects/next-app-router-trpc-drizzle-planetscale-edge/src/components/ui/textarea";
+import { api } from "../../../../../../WebstormProjects/next-app-router-trpc-drizzle-planetscale-edge/src/lib/api/client";
 
 export const createNoteSchema = z.object({
   title: z.string().min(1),
