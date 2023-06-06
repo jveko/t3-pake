@@ -2,8 +2,6 @@
 
 import * as React from "react";
 import Link from "next/link";
-
-import { cn } from "@/lib/utils";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -12,8 +10,9 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
-import { routes } from "@/lib/routes";
+} from "~/components/ui/navigation-menu";
+import { routes } from "~/lib/routes";
+import { cn } from "~/lib/utils";
 
 const components: { title: string; href: string; description: string }[] = [
   {

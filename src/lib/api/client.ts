@@ -1,12 +1,9 @@
 "use client";
 
-import { httpBatchLink, loggerLink } from "@trpc/client";
+import {httpBatchLink, loggerLink} from "@trpc/client";
 import superjson from "superjson";
-import {
-  createHydrateClient,
-  createTRPCNextBeta,
-} from "~/@trpc/next-layout/client";
-import { type AppRouter } from "~/server/api/root";
+import {createHydrateClient, createTRPCNextBeta,} from "~/@trpc/next-layout/client";
+import {type AppRouter} from "~/server/api/root";
 
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return ""; // browser should use relative url

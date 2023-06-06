@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils";
-import { ImageOff } from "lucide-react";
+import {cn} from "~/lib/utils";
+import {ImageOff} from "lucide-react";
 import Image from "next/image";
 
 export const ProductImage = (props: {
@@ -43,7 +43,7 @@ export const ProductImage = (props: {
             props.width
           )}
         >
-          <ImageOff />
+          <ImageOff/>
         </div>
       )}
     </>

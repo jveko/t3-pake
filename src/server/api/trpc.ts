@@ -1,12 +1,12 @@
-import { TRPCError, initTRPC } from "@trpc/server";
+import {initTRPC, TRPCError} from "@trpc/server";
 import superjson from "superjson";
-import { ZodError } from "zod";
+import {ZodError} from "zod";
 
-import { type Context } from "./context";
+import {type Context} from "./context";
 
 const t = initTRPC.context<Context>().create({
   transformer: superjson,
-  errorFormatter({ shape, error }) {
+  errorFormatter({shape, error}) {
     return {
       ...shape,
       data: {
@@ -18,8 +18,14 @@ const t = initTRPC.context<Context>().create({
   },
 });
 
-const isAuthed = t.middleware(async ({ ctx, next }) => {
+const isAuthed = t.middleware(async ({ctx, next}) => {
   if (!ctx.auth?.userId) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "Not authenticated",
+    });
+  }
+  if (!ctx.user == null) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
       message: "Not authenticated",
@@ -30,6 +36,7 @@ const isAuthed = t.middleware(async ({ ctx, next }) => {
     ctx: {
       ...ctx,
       auth: ctx.auth,
+      user: ctx.user!
     },
   });
 });

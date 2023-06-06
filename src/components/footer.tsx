@@ -1,4 +1,3 @@
-import { GithubIcon } from "lucide-react";
 import { ContentWrapper } from "./content-wrapper";
 import { Logo } from "./logo";
 

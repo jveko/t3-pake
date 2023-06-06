@@ -1,7 +1,7 @@
 export const currencyFormatter = (value: number) => {
   const formattedPrice = new Intl.NumberFormat("en-US", {
     style: "currency",
-    currency: "USD",
+    currency: "IDR",
   }).format(value);
 
   const [dollars, cents] = formattedPrice.split(".");

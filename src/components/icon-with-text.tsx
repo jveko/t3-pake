@@ -1,4 +1,5 @@
 import { Text } from "./ui/text";
+import React from "react";
 
 export const IconWithText = ({
   icon,

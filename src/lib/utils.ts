@@ -23,3 +23,7 @@ export function absoluteUrl(path: string) {
 export function slugify(string: string) {
   return slugifyjs(string, { lower: true });
 }
+
+export const shapeForType = <T>() => <S extends ZodShape<T>>(arg: S) => {
+  return arg;
+};

@@ -1,29 +1,24 @@
 import Link from "next/link";
-import {Logo} from "./logo";
-import {ContentWrapper} from "./content-wrapper";
-import {MenuItems} from "./menu-items";
-import {Line} from "./line";
-import {cn} from "~/lib/utils";
-import {ProductSearch} from "~/components/storefront/product-search";
-import {ShoppingCartHeader} from "~/components/shopping-cart-header";
-import {SignedIn, SignedOut, UserButton} from "@clerk/nextjs/app-beta";
-import {LockIcon, UserIcon} from "lucide-react";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs/app-beta";
+import { LockIcon, StoreIcon, UserIcon } from "lucide-react";
+import { MenuItemsAdmin } from "~/components/menu-items-admin";
+import { cn } from "~/lib/utils";
+
+import { ContentWrapper } from "./content-wrapper";
+import { Line } from "./line";
+import { Logo } from "./logo";
+import { MenuItems } from "./menu-items";
+
 // import { MobileNavigation } from "./mobile-navigation";
 // import { ShoppingCartHeader } from "./shopping-cart-header";
 // import { ProductSearch } from "./storefront/product-search";
 
-export const NavBar = ({
-                         isAdmin
-                       }: { isAdmin: boolean }) => {
+export const NavbarAdmin = ({ isAdmin }: { isAdmin: boolean }) => {
   return (
     <>
-      <nav
-        className={cn(
-          "pb-1 sticky top-0 bg-white z-10 shadow-sm"
-        )}
-      >
+      <nav className={cn("pb-1 sticky top-0 bg-white z-10 shadow-sm")}>
         <ContentWrapper className="flex justify-between items-center md:hidden flex-wrap gap-4">
-          <Logo/>
+          <Logo />
           <div className="ml-auto flex items-center gap-8">
             {/*<ShoppingCartHeader />*/}
             {/*<MobileNavigation />*/}
@@ -32,43 +27,43 @@ export const NavBar = ({
         <ContentWrapper className="hidden md:block">
           <ul className="flex items-center justify-between gap-12 py-2">
             <li>
-              <Link href={{pathname: "/"}}>
-                <Logo/>
+              <Link href={{ pathname: "/" }}>
+                <Logo />
               </Link>
             </li>
-            <li className="flex-1">
-              <ProductSearch/>
-            </li>
+            <li className="flex-1"></li>
             <li>
-              <ShoppingCartHeader/>
+              <Link href={"/"}>
+                <StoreIcon />
+              </Link>
             </li>
-            {isAdmin &&
+            {isAdmin && (
               <li>
                 <Link href={"/admin"}>
-                  <LockIcon/>
-
+                  <LockIcon />
                 </Link>
-              </li>}
+              </li>
+            )}
             <li>
               <SignedIn>
-                <UserButton afterSignOutUrl="/"/>
+                <UserButton afterSignOutUrl="/" />
               </SignedIn>
               <SignedOut>
                 <Link href={"sign-in"}>
-                  <UserIcon/>
+                  <UserIcon />
                 </Link>
               </SignedOut>
             </li>
           </ul>
         </ContentWrapper>
-        <Line className="hidden md:block"/>
+        <Line className="hidden md:block" />
         <ContentWrapper className="hidden md:block py-0">
           <div className="-ml-4 mt-1">
-            <MenuItems/>
+            <MenuItemsAdmin />
           </div>
         </ContentWrapper>
       </nav>
-      <Line/>
+      <Line />
     </>
   );
 };

@@ -2,18 +2,14 @@
 
 import * as React from "react";
 import Link from "next/link";
-
-import {cn} from "~/lib/utils";
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "~/components/ui/navigation-menu";
-import {routes} from "~/lib/routes";
+import { cn } from "~/lib/utils";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -42,65 +38,23 @@ const components: { title: string; href: string; description: string }[] = [
   },
 ];
 
-export function MenuItems() {
+export function MenuItemsAdmin() {
   return (
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <Link href="/products" legacyBehavior passHref>
+          <Link href="/admin/collections" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Products
+              Collections
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Collections</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-              <li className="row-span-3">
-                <NavigationMenuLink asChild>
-                  <a
-                    className="flex h-full w-full select-none flex-col justify-end rounded-md no-underline outline-none focus:shadow-md bg-sport overflow-hidden"
-                    href="/"
-                  >
-                    <div className="relative top-0 bg-primary/60 w-full h-full p-6 pt-24">
-                      <div className="mb-2 mt-4 text-lg font-medium text-white">
-                        Here to help
-                      </div>
-                      <p className="text-sm leading-tight text-muted-foreground text-gray-100">
-                        Contact our customer support team 24/7
-                      </p>
-                    </div>
-                  </a>
-                </NavigationMenuLink>
-              </li>
-              <ListItem href={routes.products} title="New Arrivals">
-                Shop our new arrivals and exclusive collections.
-              </ListItem>
-              <ListItem href={routes.products} title="Sport">
-                Discover our new sports range.
-              </ListItem>
-              <ListItem href={routes.products} title="Summer Sale">
-                Grab a bargain with our summer sale.
-              </ListItem>
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>Featured Sellers</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-              {components.map((component) => (
-                <ListItem
-                  key={component.title}
-                  title={component.title}
-                  href={component.href}
-                >
-                  {component.description}
-                </ListItem>
-              ))}
-            </ul>
-          </NavigationMenuContent>
+          <Link href="/admin/products" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              Products
+            </NavigationMenuLink>
+          </Link>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
@@ -110,7 +64,7 @@ export function MenuItems() {
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
   React.ComponentPropsWithoutRef<"a">
->(({className, title, children, ...props}, ref) => {
+>(({ className, title, children, ...props }, ref) => {
   return (
     <li>
       <NavigationMenuLink asChild>

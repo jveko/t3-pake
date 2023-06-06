@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "~/lib/utils";
 import { Phone, RotateCcw, Truck } from "lucide-react";
 
 export const FeatureIcons = (props: { className?: string }) => {

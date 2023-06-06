@@ -1,27 +1,41 @@
-"use client"
+"use client";
 
-import { ColumnDef } from "@tanstack/react-table"
+import Link from "next/link";
+import { type ColumnDef } from "@tanstack/react-table";
+import { EyeIcon, ViewIcon } from "lucide-react";
+import { DataTableColumnHeader } from "~/components/data-table-header";
+import { type Collection } from "~/server/db/schema";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type Payment = {
-  id: string
-  amount: number
-  status: "pending" | "processing" | "success" | "failed"
-  email: string
-}
-
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<{
+  collections: Collection;
+  parent: Collection | null;
+}>[] = [
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "collections.id",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="ID" />
+    ),
   },
   {
-    accessorKey: "email",
-    header: "Email",
+    accessorKey: "collections.name",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Name" />
+    ),
   },
   {
-    accessorKey: "amount",
-    header: "Amount",
+    accessorKey: "parent.name",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Parent" />
+    ),
   },
-]
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      return (
+        <Link href={`/admin/collections/${row.original.collections.id}`}>
+          <EyeIcon />
+        </Link>
+      );
+    },
+  },
+];

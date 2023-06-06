@@ -8,6 +8,16 @@ export const routes = {
   seller: "/seller",
   cart: "/cart",
 };
+export const routesAdmin = {
+  collections: {
+    home: "/admin/collections",
+    create: "/admin/collections/create",
+  },
+  products: {
+    home: "/admin/products",
+    create: "/admin/products/create",
+  },
+};
 
 export const anchorTags = {
   collectionHeader: "collection-header",
