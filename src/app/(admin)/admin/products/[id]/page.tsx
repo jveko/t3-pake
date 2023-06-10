@@ -5,7 +5,8 @@ import { ChevronLeftSquareIcon } from "lucide-react";
 import { ContentWrapper } from "~/components/content-wrapper";
 import { H2 } from "~/components/typography";
 import { api } from "~/lib/api/server";
-import { type Collection } from "~/server/db/schema";
+import { routesAdmin } from "~/lib/routes";
+import { Product } from "~/server/db/schema";
 
 import DeleteProduct from "./delete-product";
 import EditProduct from "./edit-product";
@@ -16,27 +17,27 @@ export default async function ProductEditPage({
   params: { id: string };
 }) {
   const id = Number.isNaN(params.id) ? undefined : params.id;
-  if (id == undefined) redirect("/admin/collections");
+  if (id == undefined) redirect(routesAdmin.products.home);
   const parsedId = Number(id);
-  const collection = await api.collection.getCollection.fetch({ id: parsedId });
-  if (collection == null || collection == undefined)
-    redirect("/admin/collections");
+  const product = await api.product.getProduct.fetch({ id: parsedId });
+  if (product == null || product == undefined)
+    redirect(routesAdmin.products.home);
   const collections = await api.collection.getCollectionsSelectable.fetch();
   return (
     <div>
       <ContentWrapper>
         <H2 className="mb-5 flex items-center justify-between">
           <div className="flex items-center ">
-            <Link href={"/admin/collections"} className="pr-2">
+            <Link href={routesAdmin.products.home} className="pr-2">
               <ChevronLeftSquareIcon />
             </Link>
-            Update Collection
+            Update Product
           </div>
 
           <DeleteProduct id={parsedId}></DeleteProduct>
         </H2>
         <EditProduct
-          data={collection as Collection}
+          data={product as Product}
           collections={collections}
         ></EditProduct>
       </ContentWrapper>

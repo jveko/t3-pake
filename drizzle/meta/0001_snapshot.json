@@ -1,8 +1,8 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "f44cc640-3b76-449e-8a08-588e4407fd49",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "c889a938-f352-49c4-9204-3635a075b453",
+  "prevId": "f44cc640-3b76-449e-8a08-588e4407fd49",
   "tables": {
     "carts": {
       "name": "carts",
@@ -119,11 +119,10 @@
         },
         "stock": {
           "name": "stock",
-          "type": "decimal",
+          "type": "int",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": "'0'"
+          "autoincrement": false
         },
         "price": {
           "name": "price",

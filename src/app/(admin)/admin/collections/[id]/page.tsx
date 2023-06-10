@@ -25,7 +25,7 @@ export default async function CollectionEdit({
   return (
     <div>
       <ContentWrapper>
-        <H2 className="mb-5 flex items-center justify-between">
+        <H2 className="flex items-center justify-between mb-5">
           <div className="flex items-center ">
             <Link href={"/admin/collections"} className="pr-2">
               <ChevronLeftSquareIcon />

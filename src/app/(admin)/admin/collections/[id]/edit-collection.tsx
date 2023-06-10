@@ -24,7 +24,7 @@ import {
 } from "~/components/ui/select";
 import { api } from "~/lib/api/client";
 import { routesAdmin } from "~/lib/routes";
-import { type Collection } from "~/server/db/schema";
+import { CollectionSelectable, type Collection } from "~/server/db/schema";
 
 export const editCollectionsSchema = z.object({
   id: z.number(),
@@ -45,7 +45,7 @@ export default function EditCollection({
   collections,
 }: {
   data: Collection;
-  collections: Collection[];
+  collections: CollectionSelectable[];
 }) {
   console.log(data);
   const form = useForm<EditCollectionSchema>({
@@ -117,7 +117,7 @@ export default function EditCollection({
         </div>
         <Button type="submit">
           Save changes
-          {isLoading && <Loader2 className="animate-spin ml-2 w-4" />}
+          {isLoading && <Loader2 className="w-4 ml-2 animate-spin" />}
         </Button>
       </form>
     </Form>

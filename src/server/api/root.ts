@@ -1,16 +1,19 @@
-import {exampleRouter} from "~/server/api/routers/example";
-import {createTRPCRouter} from "~/server/api/trpc";
-import {stripeRouter} from "~/server/api/routers/stripe";
-import {productRouter} from "~/server/api/routers/product";
-import {userRouter} from "~/server/api/routers/user";
-import {collectionRouter} from "~/server/api/routers/collection";
+import { collectionRouter } from "~/server/api/routers/collection";
+import { exampleRouter } from "~/server/api/routers/example";
+import { productRouter } from "~/server/api/routers/product";
+import { stripeRouter } from "~/server/api/routers/stripe";
+import { userRouter } from "~/server/api/routers/user";
+import { createTRPCRouter } from "~/server/api/trpc";
+
+import { imageRouter } from "./routers/image";
 
 export const appRouter = createTRPCRouter({
   example: exampleRouter,
+  image: imageRouter,
   stripe: stripeRouter,
   product: productRouter,
   user: userRouter,
-  collection:collectionRouter
+  collection: collectionRouter,
 });
 
 // export type definition of API

@@ -2,9 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { UploadButton } from "@uploadthing/react";
 import { Loader2 } from "lucide-react";
 import { useForm, type DefaultValues } from "react-hook-form";
 import { z } from "zod";
+import { OurFileRouter } from "~/app/api/uploadthing/core";
+import { ProductImage } from "~/components/admin/product-image";
 import { Button } from "~/components/ui/button";
 import {
   Form,
@@ -22,53 +25,76 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
+import { Textarea } from "~/components/ui/textarea";
 import { api } from "~/lib/api/client";
 import { routesAdmin } from "~/lib/routes";
-import { type Collection } from "~/server/db/schema";
+import {
+  CollectionSelectable,
+  Product,
+  type Collection,
+} from "~/server/db/schema";
 
-export const editCollectionsSchema = z.object({
+export const editProductSchema = z.object({
   id: z.number(),
   name: z.string().min(1),
-  parentId: z.string().optional(),
+  stock: z.coerce.number().positive().min(0),
+  price: z.coerce.number().positive().min(0),
+  description: z.string().min(1),
+  collectionId: z.string().min(1),
+  images: z
+    .array(
+      z.object({
+        fileUrl: z.string(),
+        fileKey: z.string(),
+      })
+    )
+    .min(1),
 });
 
-type EditCollectionSchema = z.infer<typeof editCollectionsSchema>;
-
-export const initialFormData: DefaultValues<EditCollectionSchema> = {
-  id: undefined,
-  name: undefined,
-  parentId: undefined,
-};
+type EditProductSchema = z.infer<typeof editProductSchema>;
 
 export default function EditProduct({
   data,
   collections,
 }: {
-  data: Collection;
-  collections: Collection[];
+  data: Product;
+  collections: CollectionSelectable[];
 }) {
-  console.log(data);
-  const form = useForm<EditCollectionSchema>({
-    resolver: zodResolver(editCollectionsSchema),
+  const form = useForm<EditProductSchema>({
+    resolver: zodResolver(editProductSchema),
     defaultValues: {
       id: data.id,
-      name: data.name ? data.name : undefined,
-      parentId: data.parent_id ? data.parent_id.toString() : undefined,
+      name: data.name,
+      stock: data.stock,
+      price: Number(data.price),
+      description: data.description,
+      collectionId: data.collection_id.toString(),
+      images: data.images as { fileUrL: string; fileKey: string }[],
     },
   });
   const router = useRouter();
 
-  const { mutate: editCollection, isLoading } =
-    api.collection.editCollection.useMutation({
+  const { mutate: editProduct, isLoading } =
+    api.product.editProduct.useMutation({
       onSuccess(_, newData) {
         form.reset(newData);
-        router.push(routesAdmin.collections.home);
+        router.push(routesAdmin.products.home);
       },
     });
 
-  function onSubmit(values: EditCollectionSchema) {
-    editCollection(values);
+  function onSubmit(values: EditProductSchema) {
+    editProduct(values);
   }
+
+  const { mutate: deleteImage, isLoading: isLoadingDeleteImage } =
+    api.image.delete.useMutation({
+      onSuccess(data) {
+        alert("success");
+        form.setValue("images", [
+          ...form.getValues("images").filter((x) => x.fileKey != data.key),
+        ]);
+      },
+    });
 
   return (
     <Form {...form}>
@@ -89,17 +115,56 @@ export default function EditProduct({
           />
           <FormField
             control={form.control}
-            name="parentId"
+            name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Parent</FormLabel>
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Textarea placeholder="Description..." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="price"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Price</FormLabel>
+                <FormControl>
+                  <Input placeholder="Price..." {...field} type="number" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="stock"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Stock</FormLabel>
+                <FormControl>
+                  <Input placeholder="Stock..." {...field} type="number" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="collectionId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Collection</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select parent" />
+                      <SelectValue placeholder="Select Collection" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -114,10 +179,45 @@ export default function EditProduct({
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="images"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Images</FormLabel>
+                {form.getValues("images").map((x) => (
+                  <ProductImage
+                    url={x.fileUrl}
+                    delete={async () => {
+                      deleteImage({ key: x.fileKey });
+                    }}
+                    height="h-48"
+                    width="w-48"
+                    isLoading={isLoadingDeleteImage}
+                  />
+                ))}
+                <UploadButton<OurFileRouter>
+                  endpoint="imageProduct"
+                  onClientUploadComplete={(res) => {
+                    if (res != null) {
+                      form.setValue("images", [
+                        ...form.getValues("images"),
+                        ...res.map((x) => x),
+                      ]);
+                    }
+                  }}
+                  onUploadError={(error: Error) => {
+                    alert(error.message);
+                  }}
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
         <Button type="submit">
           Save changes
-          {isLoading && <Loader2 className="animate-spin ml-2 w-4" />}
+          {isLoading && <Loader2 className="w-4 ml-2 animate-spin" />}
         </Button>
       </form>
     </Form>

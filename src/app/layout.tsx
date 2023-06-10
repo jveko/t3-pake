@@ -1,3 +1,4 @@
+import "@uploadthing/react/styles.css";
 import "~/styles/globals.css";
 import { Toaster } from "~/components/ui/toaster";
 import { siteConfig } from "~/config/site";

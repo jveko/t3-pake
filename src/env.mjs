@@ -1,4 +1,4 @@
-import {z} from "zod";
+import { z } from "zod";
 
 const server = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]),
@@ -9,6 +9,8 @@ const server = z.object({
   DB_PASSWORD: z.string().min(1),
   DB_URL: z.string().min(1),
   STRIPE_SECRET_KEY: z.string().min(1),
+  UPLOADTHING_SECRET: z.string().min(1),
+  UPLOADTHING_APP_ID: z.string().min(1),
 });
 
 const client = z.object({
@@ -29,13 +31,16 @@ const processEnv = {
   CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
   CLERK_WEBHOOK_SECRET: process.env.CLERK_WEBHOOK_SECRET,
   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
-  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
+    process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
   DB_HOST: process.env.DB_HOST,
   DB_USERNAME: process.env.DB_USERNAME,
   DB_PASSWORD: process.env.DB_PASSWORD,
   DB_URL: process.env.DB_URL,
-  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
+    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
   STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+  UPLOADTHING_SECRET: process.env.UPLOADTHING_SECRET,
+  UPLOADTHING_APP_ID: process.env.UPLOADTHING_APP_ID,
 };
 
 // Don't touch the part below
@@ -82,4 +87,4 @@ if (!!process.env.SKIP_ENV_VALIDATION == false) {
   });
 }
 
-export {env};
+export { env };

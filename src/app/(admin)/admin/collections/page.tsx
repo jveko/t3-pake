@@ -1,9 +1,9 @@
 import React from "react";
 import Link from "next/link";
+import { DataTable } from "~/app/(admin)/admin/collections/data-table";
 import { ContentWrapper } from "~/components/content-wrapper";
 import { H2 } from "~/components/typography";
 import { Button } from "~/components/ui/button";
-import { DataTable } from "~/components/ui/data-table";
 import { api } from "~/lib/api/server";
 import { routesAdmin } from "~/lib/routes";
 

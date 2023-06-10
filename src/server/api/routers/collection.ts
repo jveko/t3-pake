@@ -8,11 +8,7 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-import {
-  Collection,
-  CollectionWithParent,
-  collections,
-} from "~/server/db/schema";
+import { CollectionSelectable, collections } from "~/server/db/schema";
 
 export const collectionRouter = createTRPCRouter({
   getCollections: publicProcedure.query(async ({ ctx: { db, user } }) => {
@@ -24,7 +20,12 @@ export const collectionRouter = createTRPCRouter({
   }),
   getCollectionsSelectable: publicProcedure.query(
     async ({ ctx: { db, user } }) => {
-      return await db.select().from(collections);
+      return await db
+        .select({
+          id: collections.id,
+          name: collections.name,
+        })
+        .from(collections);
     }
   ),
   getCollection: publicProcedure

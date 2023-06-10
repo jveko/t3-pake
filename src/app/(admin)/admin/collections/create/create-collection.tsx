@@ -24,7 +24,7 @@ import {
 } from "~/components/ui/select";
 import { api } from "~/lib/api/client";
 import { routes, routesAdmin } from "~/lib/routes";
-import { type Collection } from "~/server/db/schema";
+import { CollectionSelectable, type Collection } from "~/server/db/schema";
 
 export const createCollectionSchema = z.object({
   name: z.string().min(1),
@@ -41,7 +41,7 @@ export const initialFormData: DefaultValues<CreateNoteSchema> = {
 export default function CreateCollection({
   collections,
 }: {
-  collections: Collection[];
+  collections: CollectionSelectable[];
 }) {
   const form = useForm<CreateNoteSchema>({
     resolver: zodResolver(createCollectionSchema),
@@ -107,7 +107,7 @@ export default function CreateCollection({
           </div>
           <Button type="submit">
             Save Collection
-            {isLoading && <Loader2 className="animate-spin ml-2 w-4" />}
+            {isLoading && <Loader2 className="w-4 ml-2 animate-spin" />}
           </Button>
         </form>
       </Form>

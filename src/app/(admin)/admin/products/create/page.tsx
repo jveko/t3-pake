@@ -13,7 +13,7 @@ export default async function ProductCreatePage() {
   return (
     <div>
       <ContentWrapper>
-        <H2 className="mb-5 flex items-center justify-start">
+        <H2 className="flex items-center justify-start mb-5">
           <Link href={routesAdmin.products.home} className="pr-2">
             <ChevronLeftSquareIcon />
           </Link>

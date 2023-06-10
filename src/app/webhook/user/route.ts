@@ -1,14 +1,14 @@
-import {Webhook, WebhookRequiredHeaders} from "svix";
-import {headers} from "next/headers";
-import {NextResponse} from "next/server";
-import {db} from "~/server/db";
-import {users} from "~/server/db/schema";
-import {eq} from "drizzle-orm";
+import { headers } from "next/headers";
+import { NextResponse } from "next/server";
+import { eq } from "drizzle-orm";
+import { Webhook, WebhookRequiredHeaders } from "svix";
+import { db } from "~/server/db";
+import { users } from "~/server/db/schema";
 
-const secret = process.env.CLERK_WEBHOOK_SECRET as string
+const secret = process.env.CLERK_WEBHOOK_SECRET as string;
 
 export async function POST(request: Request) {
-  const headersList = headers()
+  const headersList = headers();
   const heads = {
     "svix-id": headersList.get("svix-id"),
     "svix-timestamp": headersList.get("svix-timestamp"),
@@ -20,44 +20,50 @@ export async function POST(request: Request) {
   const wh = new Webhook(secret);
   let evt: Event | null = null;
   try {
-    evt = wh.verify(JSON.stringify(payload), heads as WebhookRequiredHeaders) as Event;
+    evt = wh.verify(
+      JSON.stringify(payload),
+      heads as WebhookRequiredHeaders
+    ) as Event;
   } catch (e) {
-    return NextResponse.json({}, {status: 401});
+    return NextResponse.json({}, { status: 401 });
   }
   const eventType: EventType = evt.type;
 
   if (eventType == "user.created" || eventType == "user.updated") {
-    evt.data = evt.data as UserCreatedEvent
-    await db.insert(users)
+    evt.data = evt.data as UserCreatedEvent;
+    await db
+      .insert(users)
       .values({
         external_id: evt.data.id,
         data: evt.data,
-      }).onDuplicateKeyUpdate({
-        set: {
-          data: evt.data
-        }
       })
+      .onDuplicateKeyUpdate({
+        set: {
+          data: evt.data,
+        },
+      });
   }
   if (eventType == "user.deleted") {
-    evt.data = evt.data as UserDeletedEvent
-    await db.update(users)
+    evt.data = evt.data as UserDeletedEvent;
+    await db
+      .update(users)
       .set({
-        is_deleted: true
-      }).where(eq(users.external_id, evt.data.id))
+        is_deleted: true,
+      })
+      .where(eq(users.external_id, evt.data.id));
   }
-  return NextResponse.json({"message": "Success"}, {status: 200})
+  return NextResponse.json({ message: "Success" }, { status: 200 });
 }
 
 type EventType = "user.created" | "user.updated" | "user.deleted" | "*";
 
 type Event = {
-  data: UserCreatedEvent | UserDeletedEvent,
-  object: "event",
-  type: EventType
-}
+  data: UserCreatedEvent | UserDeletedEvent;
+  object: "event";
+  type: EventType;
+};
 
-
-export type UserCreatedEvent = {
+type UserCreatedEvent = {
   created_at: number;
   email_addresses: EmailAddress[];
   external_id: string;

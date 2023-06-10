@@ -11,28 +11,41 @@ export const columns: ColumnDef<{
   collections: Collection;
 }>[] = [
   {
-    accessorKey: "collections.id",
+    accessorKey: "products.id",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="ID" />
     ),
   },
   {
-    accessorKey: "collections.name",
+    id: "name",
+    accessorKey: "products.name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Name" />
     ),
   },
   {
-    accessorKey: "parent.name",
+    accessorKey: "products.description",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Parent" />
+      <DataTableColumnHeader column={column} title="Description" />
+    ),
+  },
+  {
+    accessorKey: "products.stock",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Stock" />
+    ),
+  },
+  {
+    accessorKey: "products.price",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Price" />
     ),
   },
   {
     id: "actions",
     cell: ({ row }) => {
       return (
-        <Link href={`/admin/collections/${row.original.products.id}`}>
+        <Link href={`/admin/products/${row.original.products.id}`}>
           <EyeIcon />
         </Link>
       );

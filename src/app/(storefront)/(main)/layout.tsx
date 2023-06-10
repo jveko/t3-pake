@@ -1,9 +1,10 @@
-import {NavBar} from "~/components/navbar";
+import { NavBar } from "~/components/navbar";
+
 import "../../../styles/globals.css";
-import {Footer} from "~/components/footer";
 import React from "react";
-import {api} from "~/lib/api/server";
-import {auth} from "@clerk/nextjs/app-beta";
+import { auth } from "@clerk/nextjs/app-beta";
+import { Footer } from "~/components/footer";
+import { api } from "~/lib/api/server";
 
 export const metadata = {
   title: "OneStopShop - Online marketplace",
@@ -11,16 +12,16 @@ export const metadata = {
 };
 
 export default async function StorefrontLayout({
-                                                 children,
-                                               }: {
+  children,
+}: {
   children: React.ReactNode;
 }) {
-  const {userId} = auth();
+  var { userId } = auth();
   return (
     <div className="min-h-screen w-full flex flex-col">
-      <NavBar isAdmin={await api.user.isAdmin.fetch({externalId: userId ?? ""})}/>
+      <NavBar isAdmin={await api.user.isAdmin.fetch({ externalId: userId })} />
       <div className="h-full flex-1 mb-8">{children}</div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

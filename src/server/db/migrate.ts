@@ -7,12 +7,12 @@ import "dotenv/config";
 
 // inspired by Raphael Moreau @rphlmr for Postgres, extended for Planetscale
 const runMigrate = async () => {
-  if (!process.env.DATABASE_URL) {
-    throw new Error("DATABASE_URL is not defined");
+  if (!process.env.DB_URL) {
+    throw new Error("DB_URL is not defined");
   }
 
   const connection = connect({
-    url: process.env.DATABASE_URL,
+    url: process.env.DB_URL,
     fetch,
   });
 
@@ -22,7 +22,7 @@ const runMigrate = async () => {
 
   const start = Date.now();
 
-  await migrate(db, { migrationsFolder: "src/lib/db/migrations" });
+  await migrate(db, { migrationsFolder: "drizzle" });
 
   const end = Date.now();
 

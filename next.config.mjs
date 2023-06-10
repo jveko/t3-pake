@@ -8,5 +8,15 @@
 const config = {
   reactStrictMode: true,
   experimental: { appDir: true, typedRoutes: false },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "uploadthing.com",
+        port: "",
+        pathname: "/f/**",
+      },
+    ],
+  },
 };
 export default config;
