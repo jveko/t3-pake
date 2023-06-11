@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { z } from "zod";
 import { editProductSchema } from "~/app/(admin)/admin/products/[id]/edit-product";
 import { createProductSchema } from "~/app/(admin)/admin/products/create/create-product";
@@ -11,8 +11,21 @@ import {
 import { Product, collections, products } from "~/server/db/schema";
 
 export const productRouter = createTRPCRouter({
+  getProductsByFilter: publicProcedure
+    .input(
+      z.object({
+        collectionId: z.number().optional(),
+      })
+    )
+    .query(async ({ input: i, ctx: { db } }) => {
+      var query = db.select().from(products);
+      if (i.collectionId) {
+        query = query.where(eq(products.collection_id, i.collectionId));
+      }
+      return (await query) as Product[];
+    }),
   getHome: publicProcedure.query(async ({ ctx: { db, user } }) => {
-    return (await db.select().from(products)) as Product[];
+    return (await db.select().from(products).limit(4)) as Product[];
   }),
   getProducts: protectedProcedure.query(async ({ ctx: { db, user } }) => {
     return await db
@@ -118,5 +131,20 @@ export const productRouter = createTRPCRouter({
       // }
       const result = await db.delete(products).where(eq(products.id, i.id));
       return result;
+    }),
+  count: publicProcedure
+    .input(
+      z.object({
+        collectionId: z.number().optional(),
+      })
+    )
+    .query(async ({ input: i, ctx: { db } }) => {
+      var query = db.select({ count: sql<number>`count(*)` }).from(products);
+      if (i.collectionId) {
+        query = query.where(eq(products.collection_id, i.collectionId));
+      }
+      const result = await query;
+      if (result.length > 0) return result[0]!.count;
+      return 0;
     }),
 });

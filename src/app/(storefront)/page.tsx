@@ -7,6 +7,7 @@ import { ContentWrapper } from "~/components/content-wrapper";
 import { ProductCard } from "~/components/storefront/product-card";
 import { Button } from "~/components/ui/button";
 import { Heading } from "~/components/ui/heading";
+import { LoadingSkeleton } from "~/components/ui/loading-skeleton";
 import { api } from "~/lib/api/client";
 import { routes } from "~/lib/routes";
 
@@ -24,12 +25,15 @@ export default function Home() {
           }
         >
           <Heading size="h3">Top Picks</Heading>
+
           <div className="grid grid-cols-1 gap-6 mt-2 overflow-auto md:grid-cols-2 lg:grid-cols-4">
-            {!isLoading ? (
-              products!.map((x) => <ProductCard product={x}></ProductCard>)
-            ) : (
-              <Loader2 className=" w-4 ml-2 animate-spin" />
-            )}
+            {!isLoading
+              ? products!.map((x, i) => (
+                  <ProductCard key={i} product={x}></ProductCard>
+                ))
+              : Array.from(Array(4)).map((_, i) => (
+                  <LoadingSkeleton className="w-full h-48" key={i} />
+                ))}
           </div>
           <div className="grid mt-12 place-content-center">
             <Link href={routes.products}>

@@ -27,18 +27,18 @@ export const ProductCard = (props: {
         />
       </Link>
       <Link href={productPageLink}>
-        <Text className="line-clamp-1 w-full mt-2">{props.product.name}</Text>
-        <Text>{currencyFormatter(Number(props.product.price))}</Text>
+        <Text className="w-full mt-2 line-clamp-1">{props.product.name}</Text>
+        <Text>{currencyFormatter(props.product.price)}</Text>
       </Link>
       {/* {!props.hideButtonActions && (
-        <div className="flex flex-col sm:flex-row gap-2 items-center justify-between mt-4 mb-8">
+        <div className="flex flex-col items-center justify-between gap-2 mt-4 mb-8 sm:flex-row">
           <Link
             href={`${routes.productQuickView}/${[
               props.storeAndProduct.product.id,
             ]}`}
             className="w-full"
           >
-            <Button variant="outline" size="sm" className="flex gap-2 w-full">
+            <Button variant="outline" size="sm" className="flex w-full gap-2">
               <span>Quick View</span>
             </Button>
           </Link>

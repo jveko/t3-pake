@@ -1,8 +1,8 @@
 "use client";
 
-import { cookies } from "next/headers";
+import Link from "next/link";
+import { auth as getAuth } from "@clerk/nextjs/app-beta";
 import { ShoppingCart } from "lucide-react";
-import { test } from "node:test";
 import {
   SheetDescription,
   SheetHeader,
@@ -18,7 +18,14 @@ import { Heading } from "../ui/heading";
 import { CartLineItems } from "./cart-line-items";
 import { SheetWrapper } from "./sheet-wrapper";
 
-export const ShoppingCartHeader = () => {
+export const ShoppingCartHeader = (props: { isAuthenticate: boolean }) => {
+  if (!props.isAuthenticate) {
+    return (
+      <Link href={"sign-in"}>
+        <ShoppingCart size={26} />
+      </Link>
+    );
+  }
   const { data: carts, isLoading } = api.cart.getCart.useQuery();
   const numberOfCartItems =
     !!carts && carts.reduce((acc, item) => (acc += Number(item.carts.qty)), 0);
@@ -26,10 +33,10 @@ export const ShoppingCartHeader = () => {
   return (
     <SheetWrapper
       trigger={
-        <SheetTrigger className="flex items-center justify-center relative -left-2">
+        <SheetTrigger className="relative flex items-center justify-center -left-2">
           <ShoppingCart size={26} />
           {conditions ? (
-            <span className="bg-primary rounded-full w-6 h-6 text-white flex items-center justify-center text-sm absolute -top-2 -right-3">
+            <span className="absolute flex items-center justify-center w-6 h-6 text-sm text-white rounded-full bg-primary -top-2 -right-3">
               {numberOfCartItems}
             </span>
           ) : null}
@@ -49,7 +56,7 @@ export const ShoppingCartHeader = () => {
             ? `(${numberOfCartItems})`
             : ""}
         </SheetTitle>
-        <SheetDescription className="border border-border bg-secondary p-2 rounded-md flex items-center justify-center text-center py-3">
+        <SheetDescription className="flex items-center justify-center p-2 py-3 text-center border rounded-md border-border bg-secondary">
           Free shipping on all orders over $50
         </SheetDescription>
       </SheetHeader>

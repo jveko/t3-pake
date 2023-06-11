@@ -1,20 +1,34 @@
 "use client";
 
-import {type PropsWithChildren, useState} from "react";
+import { useState, type PropsWithChildren } from "react";
+import { anchorTags } from "~/lib/routes";
+import { cn } from "~/lib/utils";
+import { Collection } from "~/server/db/schema";
 
-const mockImage =
-  "https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80";
+import { Button } from "../ui/button";
+import { Heading } from "../ui/heading";
 
-export const CollectionHeaderWrapper = (
-  props: PropsWithChildren<{ heading: string }>
-) => {
-  const [showMore, setShowMore] = useState(false);
-
+export const CollectionHeaderWrapper = (props: {
+  heading: string;
+  collection: Collection | undefined;
+}) => {
   return (
     <div
-      className="border-border rounded-md border overflow-hidden"
+      className="overflow-hidden border rounded-md border-border"
+      id={anchorTags.collectionHeader}
     >
-
+      <div className="p-6">
+        <Heading size="h2">{props.heading}</Heading>
+        <div
+          className={cn(
+            "text-muted-foreground flex flex-col gap-4 mt-2 relative"
+          )}
+        >
+          {props.collection && (
+            <Heading size="h4">Collection {props.collection.name} </Heading>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

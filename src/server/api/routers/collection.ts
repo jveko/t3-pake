@@ -16,6 +16,23 @@ import {
 } from "~/server/db/schema";
 
 export const collectionRouter = createTRPCRouter({
+  getCollectionBySlug: publicProcedure
+    .input(
+      z.object({
+        slug: z.string().min(1),
+      })
+    )
+    .query(async ({ input, ctx: { db, user } }) => {
+      const result = await db
+        .select()
+        .from(collections)
+        .where(eq(collections.slug, input.slug))
+        .limit(1);
+      if (result.length > 0) {
+        return result[0] as Collection;
+      }
+      return undefined;
+    }),
   getMenu: publicProcedure.query(async ({ ctx: { db, user } }) => {
     return (await db
       .select({

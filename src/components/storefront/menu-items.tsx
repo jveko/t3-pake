@@ -68,6 +68,7 @@ export function MenuItems() {
                 {collections && collections.length > 0 ? (
                   collections.map((x: MenuItem) => (
                     <ListItem
+                      key={x.slug}
                       href={`${routes.products}/${x.slug}`}
                       title={x.name}
                     ></ListItem>
@@ -105,7 +106,7 @@ const ListItem = React.forwardRef<
           {...props}
         >
           <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+          <p className="text-sm leading-snug line-clamp-2 text-muted-foreground">
             {children}
           </p>
         </a>

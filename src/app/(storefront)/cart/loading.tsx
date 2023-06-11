@@ -1,17 +1,15 @@
-import { cookies } from "next/headers";
 import { LoadingSkeleton } from "~/components/ui/loading-skeleton";
 
 export default function Loading() {
   return (
     <>
-      {/* {!!cookies().has("cartItems") && ( */}
       <div>
-        <div className="mb-4 flex items-end justify-between">
+        <div className="flex items-end justify-between mb-4">
           <LoadingSkeleton className="w-48 h-12" />
-          <LoadingSkeleton className="w-36 h-8" />
+          <LoadingSkeleton className="h-8 w-36" />
         </div>
         <div className="grid grid-cols-9 gap-24">
-          <div className="col-span-6 flex flex-col gap-4">
+          <div className="flex flex-col col-span-6 gap-4">
             {Array.from(Array(6)).map((_, i) => (
               <LoadingSkeleton className="w-full h-12" key={i} />
             ))}
@@ -21,7 +19,6 @@ export default function Loading() {
           </div>
         </div>
       </div>
-      {/* )} */}
     </>
   );
 }

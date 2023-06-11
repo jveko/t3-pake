@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs/app-beta";
+import { SignedIn, SignedOut, UserButton, auth } from "@clerk/nextjs/app-beta";
 import { LockIcon, UserIcon } from "lucide-react";
 import { ProductSearch } from "~/components/storefront/product-search";
 import { ShoppingCartHeader } from "~/components/storefront/shopping-cart-header";
@@ -15,12 +15,14 @@ import { MenuItems } from "./menu-items";
 // import { ProductSearch } from "./storefront/product-search";
 
 export const NavBar = ({ isAdmin }: { isAdmin: boolean }) => {
+  const { userId } = auth();
+  const isAuthenticate = userId != null;
   return (
     <>
       <nav className={cn("pb-1 sticky top-0 bg-white z-10 shadow-sm")}>
-        <ContentWrapper className="flex justify-between items-center md:hidden flex-wrap gap-4">
+        <ContentWrapper className="flex flex-wrap items-center justify-between gap-4 md:hidden">
           <Logo />
-          <div className="ml-auto flex items-center gap-8">
+          <div className="flex items-center gap-8 ml-auto">
             {/*<ShoppingCartHeader />*/}
             {/*<MobileNavigation />*/}
           </div>
@@ -36,9 +38,15 @@ export const NavBar = ({ isAdmin }: { isAdmin: boolean }) => {
               <ProductSearch />
             </li>
             <li>
-              {/* @ts-expect-error Async Server Component */}
-              <ShoppingCartHeader />
+              <ShoppingCartHeader isAuthenticate={isAuthenticate} />
             </li>
+            {isAuthenticate && (
+              <li>
+                <Link href={"/account"}>
+                  <UserIcon />
+                </Link>
+              </li>
+            )}
             {isAdmin && (
               <li>
                 <Link href={"/admin"}>
@@ -59,8 +67,8 @@ export const NavBar = ({ isAdmin }: { isAdmin: boolean }) => {
           </ul>
         </ContentWrapper>
         <Line className="hidden md:block" />
-        <ContentWrapper className="hidden md:block py-0">
-          <div className="-ml-4 mt-1">
+        <ContentWrapper className="hidden py-0 md:block">
+          <div className="mt-1 -ml-4">
             <MenuItems />
           </div>
         </ContentWrapper>

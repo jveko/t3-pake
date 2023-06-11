@@ -1,8 +1,16 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getAuth, withClerkMiddleware } from "@clerk/nextjs/server";
 
-const publicPaths = ["/", "/sign-in*", "/sign-up*", "/api/trpc*", "/webhook*", "/api/webhook*"];
-
+const storeFrontPaths = ["/products*", "/product*"];
+const publicPaths = [
+  "/",
+  "/sign-in*",
+  "/sign-up*",
+  "/api/trpc*",
+  "/webhook*",
+  "/api/webhook*",
+  ...storeFrontPaths,
+];
 const isPublic = (reqPath: string) => {
   return publicPaths.find((publicPath) =>
     reqPath.match(new RegExp(`^${publicPath}$`.replace("*$", "($|/)")))
