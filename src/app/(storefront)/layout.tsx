@@ -1,6 +1,6 @@
-import { NavBar } from "~/components/navbar";
+import { NavBar } from "~/components/storefront/navbar";
 
-import "../../../styles/globals.css";
+import "../../styles/globals.css";
 import React from "react";
 import { auth } from "@clerk/nextjs/app-beta";
 import { Footer } from "~/components/footer";

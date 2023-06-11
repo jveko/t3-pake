@@ -31,9 +31,9 @@ export const createCollectionSchema = z.object({
   parentId: z.string().optional(),
 });
 
-type CreateNoteSchema = z.infer<typeof createCollectionSchema>;
+type CreateCollectionSchema = z.infer<typeof createCollectionSchema>;
 
-export const initialFormData: DefaultValues<CreateNoteSchema> = {
+export const initialFormData: DefaultValues<CreateCollectionSchema> = {
   name: undefined,
   parentId: undefined,
 };
@@ -43,18 +43,18 @@ export default function CreateCollection({
 }: {
   collections: CollectionSelectable[];
 }) {
-  const form = useForm<CreateNoteSchema>({
+  const form = useForm<CreateCollectionSchema>({
     resolver: zodResolver(createCollectionSchema),
     defaultValues: initialFormData,
   });
 
-  function onSubmit(values: CreateNoteSchema) {
-    createNote(values);
+  function onSubmit(values: CreateCollectionSchema) {
+    createCollection(values);
   }
 
   const router = useRouter();
 
-  const { mutate: createNote, isLoading } =
+  const { mutate: createCollection, isLoading } =
     api.collection.createCollection.useMutation({
       onSuccess() {
         form.reset();

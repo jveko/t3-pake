@@ -7,7 +7,7 @@ import { cn } from "~/lib/utils";
 import { ContentWrapper } from "./content-wrapper";
 import { Line } from "./line";
 import { Logo } from "./logo";
-import { MenuItems } from "./menu-items";
+import { MenuItems } from "./storefront/menu-items";
 
 // import { MobileNavigation } from "./mobile-navigation";
 // import { ShoppingCartHeader } from "./shopping-cart-header";

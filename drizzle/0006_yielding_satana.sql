@@ -1,0 +1,1 @@
+ALTER TABLE `carts` ADD `qty` int NOT NULL;

@@ -17,6 +17,7 @@ export const columns: ColumnDef<{
     ),
   },
   {
+    id: "name",
     accessorKey: "collections.name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Name" />

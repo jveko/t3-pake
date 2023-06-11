@@ -24,6 +24,20 @@ export function slugify(string: string) {
   return slugifyjs(string, { lower: true });
 }
 
-export const shapeForType = <T>() => <S extends ZodShape<T>>(arg: S) => {
-  return arg;
-};
+export const shapeForType =
+  <T>() =>
+  <S extends ZodShape<T>>(arg: S) => {
+    return arg;
+  };
+
+export function handleInputQuantity(
+  e: React.FocusEvent<HTMLInputElement, Element>,
+  setQuantity: React.Dispatch<React.SetStateAction<string | number>>,
+  defaultFallbackQuantity?: number
+) {
+  if (Number(e.target.value) < 1 || isNaN(Number(e.target.value))) {
+    setQuantity(defaultFallbackQuantity ?? 1);
+    return;
+  }
+  setQuantity(() => Number(e.target.value.split(".")[0]));
+}

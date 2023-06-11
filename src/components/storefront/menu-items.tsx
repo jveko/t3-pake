@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { Loader2 } from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -11,8 +12,11 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "~/components/ui/navigation-menu";
+import { api } from "~/lib/api/client";
 import { routes } from "~/lib/routes";
 import { cn } from "~/lib/utils";
+
+import { LoadingSkeleton } from "../ui/loading-skeleton";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -40,8 +44,12 @@ const components: { title: string; href: string; description: string }[] = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod lorem ipsum dolor sit amet.",
   },
 ];
-
+type MenuItem = {
+  name: string;
+  slug: string;
+};
 export function MenuItems() {
+  const { data: collections, isLoading } = api.collection.getMenu.useQuery();
   return (
     <NavigationMenu>
       <NavigationMenuList>
@@ -55,50 +63,25 @@ export function MenuItems() {
         <NavigationMenuItem>
           <NavigationMenuTrigger>Collections</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-              <li className="row-span-3">
-                <NavigationMenuLink asChild>
-                  <a
-                    className="flex h-full w-full select-none flex-col justify-end rounded-md no-underline outline-none focus:shadow-md bg-sport overflow-hidden"
-                    href="/"
-                  >
-                    <div className="relative top-0 bg-primary/60 w-full h-full p-6 pt-24">
-                      <div className="mb-2 mt-4 text-lg font-medium text-white">
-                        Here to help
-                      </div>
-                      <p className="text-sm leading-tight text-muted-foreground text-gray-100">
-                        Contact our customer support team 24/7
-                      </p>
-                    </div>
-                  </a>
-                </NavigationMenuLink>
-              </li>
-              <ListItem href={routes.products} title="New Arrivals">
-                Shop our new arrivals and exclusive collections.
-              </ListItem>
-              <ListItem href={routes.products} title="Sport">
-                Discover our new sports range.
-              </ListItem>
-              <ListItem href={routes.products} title="Summer Sale">
-                Grab a bargain with our summer sale.
-              </ListItem>
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>Featured Sellers</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-              {components.map((component) => (
-                <ListItem
-                  key={component.title}
-                  title={component.title}
-                  href={component.href}
-                >
-                  {component.description}
-                </ListItem>
-              ))}
-            </ul>
+            {!isLoading ? (
+              <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+                {collections && collections.length > 0 ? (
+                  collections.map((x: MenuItem) => (
+                    <ListItem
+                      href={`${routes.products}/${x.slug}`}
+                      title={x.name}
+                    ></ListItem>
+                  ))
+                ) : (
+                  <></>
+                )}
+              </ul>
+            ) : (
+              <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+                <LoadingSkeleton className="w-56 h-8" />
+                <LoadingSkeleton className="w-56 h-8" />
+              </ul>
+            )}
           </NavigationMenuContent>
         </NavigationMenuItem>
       </NavigationMenuList>

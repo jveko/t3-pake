@@ -3,14 +3,27 @@ import { alias } from "drizzle-orm/mysql-core";
 import { z } from "zod";
 import { editCollectionsSchema } from "~/app/(admin)/admin/collections/[id]/edit-collection";
 import { createCollectionSchema } from "~/app/(admin)/admin/collections/create/create-collection";
+import { slugify } from "~/lib/utils";
 import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-import { CollectionSelectable, collections } from "~/server/db/schema";
+import {
+  Collection,
+  CollectionSelectable,
+  collections,
+} from "~/server/db/schema";
 
 export const collectionRouter = createTRPCRouter({
+  getMenu: publicProcedure.query(async ({ ctx: { db, user } }) => {
+    return (await db
+      .select({
+        name: collections.name,
+        slug: collections.slug,
+      })
+      .from(collections)) as Collection[];
+  }),
   getCollections: publicProcedure.query(async ({ ctx: { db, user } }) => {
     const parent = alias(collections, "parent");
     return await db
@@ -20,12 +33,12 @@ export const collectionRouter = createTRPCRouter({
   }),
   getCollectionsSelectable: publicProcedure.query(
     async ({ ctx: { db, user } }) => {
-      return await db
+      return (await db
         .select({
           id: collections.id,
           name: collections.name,
         })
-        .from(collections);
+        .from(collections)) as CollectionSelectable[];
     }
   ),
   getCollection: publicProcedure
@@ -55,6 +68,7 @@ export const collectionRouter = createTRPCRouter({
 
       const result = await db.insert(collections).values({
         name: input.name,
+        slug: slugify(input.name),
         parent_id: parentId,
         created_by: user.id,
         updated_by: user.id,
@@ -72,6 +86,7 @@ export const collectionRouter = createTRPCRouter({
         .update(collections)
         .set({
           name: input.name,
+          slug: slugify(input.name),
           parent_id: parentId,
           updated_by: user.id,
         })

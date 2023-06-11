@@ -1,0 +1,1 @@
+ALTER TABLE `products` ADD `slug` text NOT NULL;

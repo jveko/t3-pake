@@ -1,10 +1,9 @@
-import {cn} from "~/lib/utils";
-import {ImageOff} from "lucide-react";
 import Image from "next/image";
+import { ImageOff } from "lucide-react";
+import { cn } from "~/lib/utils";
 
 export const ProductImage = (props: {
-  src: string;
-  alt: string;
+  url: string | undefined;
   sizes?: string;
   imageClassName?: string;
   wrapperClassName?: string;
@@ -13,7 +12,7 @@ export const ProductImage = (props: {
 }) => {
   return (
     <>
-      {props.src ? (
+      {props.url ? (
         <div
           className={cn(
             "relative",
@@ -23,8 +22,8 @@ export const ProductImage = (props: {
           )}
         >
           <Image
-            src={props.src}
-            alt={props.alt}
+            src={props.url}
+            alt={props.url}
             fill
             sizes={props.sizes}
             className={cn(
@@ -43,7 +42,7 @@ export const ProductImage = (props: {
             props.width
           )}
         >
-          <ImageOff/>
+          <ImageOff />
         </div>
       )}
     </>
