@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { type ColumnDef } from "@tanstack/react-table";
-import { EyeIcon, ViewIcon } from "lucide-react";
+import { EyeIcon } from "lucide-react";
 import { DataTableColumnHeader } from "~/components/data-table-header";
 import { type Collection } from "~/server/db/schema";
 

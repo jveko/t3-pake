@@ -24,7 +24,7 @@ import {
 } from "~/components/ui/select";
 import { api } from "~/lib/api/client";
 import { routesAdmin } from "~/lib/routes";
-import { CollectionSelectable, type Collection } from "~/server/db/schema";
+import { type Collection, type CollectionSelectable } from "~/server/db/schema";
 
 export const editCollectionsSchema = z.object({
   id: z.number(),
@@ -47,7 +47,7 @@ export default function EditCollection({
   data: Collection;
   collections: CollectionSelectable[];
 }) {
-  console.log(data);
+  const apiCtx = api.useContext();
   const form = useForm<EditCollectionSchema>({
     resolver: zodResolver(editCollectionsSchema),
     defaultValues: {
@@ -60,7 +60,8 @@ export default function EditCollection({
 
   const { mutate: editCollection, isLoading } =
     api.collection.editCollection.useMutation({
-      onSuccess(_, newData) {
+      async onSuccess(_, newData) {
+        await apiCtx.collection.getCollections.refetch();
         form.reset(newData);
         router.push(routesAdmin.collections.home);
       },

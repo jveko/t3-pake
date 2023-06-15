@@ -10,7 +10,7 @@ export const userRouter = createTRPCRouter({
         externalId: z.string(),
       })
     )
-    .query(async ({ input, ctx: { auth, db } }) => {
+    .query(async ({ input, ctx: { db } }) => {
       const user = await db
         .select()
         .from(users)
@@ -27,7 +27,7 @@ export const userRouter = createTRPCRouter({
         externalId: z.string().optional().nullable(),
       })
     )
-    .query(async ({ input, ctx: { auth, db } }) => {
+    .query(async ({ input, ctx: { db } }) => {
       if (input.externalId == null || input.externalId == undefined)
         return false;
       const user = await db

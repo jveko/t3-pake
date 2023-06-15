@@ -6,7 +6,7 @@ import { ContentWrapper } from "~/components/content-wrapper";
 import { H2 } from "~/components/typography";
 import { api } from "~/lib/api/server";
 import { routesAdmin } from "~/lib/routes";
-import { Product } from "~/server/db/schema";
+import { type Product } from "~/server/db/schema";
 
 import DeleteProduct from "./delete-product";
 import EditProduct from "./edit-product";

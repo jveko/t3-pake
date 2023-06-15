@@ -10,9 +10,9 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 import {
-  Collection,
-  CollectionSelectable,
   collections,
+  type Collection,
+  type CollectionSelectable,
 } from "~/server/db/schema";
 
 export const collectionRouter = createTRPCRouter({
@@ -22,7 +22,7 @@ export const collectionRouter = createTRPCRouter({
         slug: z.string().min(1),
       })
     )
-    .query(async ({ input, ctx: { db, user } }) => {
+    .query(async ({ input, ctx: { db } }) => {
       const result = await db
         .select()
         .from(collections)
@@ -33,7 +33,7 @@ export const collectionRouter = createTRPCRouter({
       }
       return undefined;
     }),
-  getMenu: publicProcedure.query(async ({ ctx: { db, user } }) => {
+  getMenu: publicProcedure.query(async ({ ctx: { db } }) => {
     return (await db
       .select({
         name: collections.name,
@@ -41,30 +41,28 @@ export const collectionRouter = createTRPCRouter({
       })
       .from(collections)) as Collection[];
   }),
-  getCollections: publicProcedure.query(async ({ ctx: { db, user } }) => {
+  getCollections: publicProcedure.query(async ({ ctx: { db } }) => {
     const parent = alias(collections, "parent");
     return await db
       .select()
       .from(collections)
       .leftJoin(parent, eq(parent.id, collections.parent_id));
   }),
-  getCollectionsSelectable: publicProcedure.query(
-    async ({ ctx: { db, user } }) => {
-      return (await db
-        .select({
-          id: collections.id,
-          name: collections.name,
-        })
-        .from(collections)) as CollectionSelectable[];
-    }
-  ),
+  getCollectionsSelectable: publicProcedure.query(async ({ ctx: { db } }) => {
+    return (await db
+      .select({
+        id: collections.id,
+        name: collections.name,
+      })
+      .from(collections)) as CollectionSelectable[];
+  }),
   getCollection: publicProcedure
     .input(
       z.object({
         id: z.number(),
       })
     )
-    .query(async ({ input, ctx: { db, user } }) => {
+    .query(async ({ input, ctx: { db } }) => {
       const result = await db
         .select()
         .from(collections)
@@ -77,7 +75,7 @@ export const collectionRouter = createTRPCRouter({
     }),
   createCollection: protectedProcedure
     .input(createCollectionSchema)
-    .mutation(async ({ input, ctx: { auth, db, user } }) => {
+    .mutation(async ({ input, ctx: { db, user } }) => {
       const parentId =
         input.parentId && !Number.isNaN(input.parentId)
           ? Number(input.parentId)
@@ -94,7 +92,7 @@ export const collectionRouter = createTRPCRouter({
     }),
   editCollection: protectedProcedure
     .input(editCollectionsSchema)
-    .mutation(async ({ input, ctx: { auth, db, user } }) => {
+    .mutation(async ({ input, ctx: { db, user } }) => {
       const parentId =
         input.parentId && !Number.isNaN(input.parentId)
           ? Number(input.parentId)
@@ -116,7 +114,7 @@ export const collectionRouter = createTRPCRouter({
         id: z.number(),
       })
     )
-    .mutation(async ({ input, ctx: { auth, db, user } }) => {
+    .mutation(async ({ input, ctx: { db } }) => {
       const result = await db
         .delete(collections)
         .where(eq(collections.id, input.id));

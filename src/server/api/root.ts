@@ -3,14 +3,12 @@ import { collectionRouter } from "./routers/collection";
 import { exampleRouter } from "./routers/example";
 import { imageRouter } from "./routers/image";
 import { productRouter } from "./routers/product";
-import { stripeRouter } from "./routers/stripe";
 import { userRouter } from "./routers/user";
 import { createTRPCRouter } from "./trpc";
 
 export const appRouter = createTRPCRouter({
   example: exampleRouter,
   image: imageRouter,
-  stripe: stripeRouter,
   product: productRouter,
   user: userRouter,
   collection: collectionRouter,

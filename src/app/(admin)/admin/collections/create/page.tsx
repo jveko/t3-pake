@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { ChevronLeftIcon, ChevronLeftSquareIcon } from "lucide-react";
+import { ChevronLeftSquareIcon } from "lucide-react";
 import { ContentWrapper } from "~/components/content-wrapper";
 import { H2 } from "~/components/typography";
 import { api } from "~/lib/api/server";

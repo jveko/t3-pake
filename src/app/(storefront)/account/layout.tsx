@@ -1,25 +1,13 @@
-import { PropsWithChildren } from "react";
-import Link from "next/link";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { NavigationMenuList } from "@radix-ui/react-navigation-menu";
+import { type PropsWithChildren } from "react";
 import { ContentWrapper } from "~/components/content-wrapper";
-import { Footer } from "~/components/footer";
 import { Line } from "~/components/line";
 import { HeadingAndSubheading } from "~/components/storefront/heading-and-subheading";
-import { MenuItems } from "~/components/storefront/menu-items";
-import { NavBar } from "~/components/storefront/navbar";
 import { SecondaryMenu } from "~/components/storefront/secondary-menu";
-import { Heading } from "~/components/ui/heading";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  navigationMenuTriggerStyle,
-} from "~/components/ui/navigation-menu";
-import { singleLevelNestedRoutes } from "~/lib/routes";
+
+
 import { cn } from "~/lib/utils";
 
-export default async function AdminLayout({ children }: PropsWithChildren) {
+export default function AdminLayout({ children }: PropsWithChildren) {
   return (
     <ContentWrapper>
       <div className="p-4 bg-gray-300 border-b border-border">

@@ -1,6 +1,6 @@
 "use client";
 
-import { PropsWithChildren } from "react";
+import { type PropsWithChildren } from "react";
 import { useSearchParams } from "next/navigation";
 import { SlidersHorizontal } from "lucide-react";
 import {
@@ -11,7 +11,7 @@ import {
   AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
 import { api } from "~/lib/api/client";
-import { Collection, Product } from "~/server/db/schema";
+import { type Collection } from "~/server/db/schema";
 
 import { EmptyStateWrapper } from "../ui/empty-state-wrapper";
 import { Heading } from "../ui/heading";

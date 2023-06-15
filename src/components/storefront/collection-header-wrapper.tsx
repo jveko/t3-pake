@@ -1,11 +1,9 @@
 "use client";
 
-import { useState, type PropsWithChildren } from "react";
 import { anchorTags } from "~/lib/routes";
 import { cn } from "~/lib/utils";
-import { Collection } from "~/server/db/schema";
+import { type Collection } from "~/server/db/schema";
 
-import { Button } from "../ui/button";
 import { Heading } from "../ui/heading";
 
 export const CollectionHeaderWrapper = (props: {

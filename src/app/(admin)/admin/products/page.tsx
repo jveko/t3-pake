@@ -7,7 +7,8 @@ import { routesAdmin } from "~/lib/routes";
 
 import ProductTable from "./table";
 
-export default async function ProductPage() {
+export default function ProductPage() {
+  console.log(process.env);
   return (
     <div>
       <ContentWrapper>

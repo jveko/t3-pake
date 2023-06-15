@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
-import { Webhook, WebhookRequiredHeaders } from "svix";
+import { Webhook, type WebhookRequiredHeaders } from "svix";
 import { db } from "~/server/db";
 import { users } from "~/server/db/schema";
 
@@ -73,7 +73,7 @@ type UserCreatedEvent = {
   image_url: string;
   last_name: string;
   last_sign_in_at: number;
-  private_metadata: any;
+  private_metadata: object;
   profile_image_url: string;
   public_metadata: any;
   unsafe_metadata: any;

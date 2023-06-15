@@ -7,11 +7,12 @@ import { columns } from "./columns";
 import { DataTable } from "./data-table";
 
 export default function CollectionTable() {
-  const collections = api.collection.getCollections.useQuery();
+  const { data: collections, isLoading } =
+    api.collection.getCollections.useQuery();
   return (
     <>
-      {!collections.isLoading && (
-        <DataTable columns={columns} data={collections.data ?? []}></DataTable>
+      {!isLoading && collections && (
+        <DataTable columns={columns} data={collections ?? []}></DataTable>
       )}
     </>
   );

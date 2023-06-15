@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Loader2 } from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -18,32 +17,6 @@ import { cn } from "~/lib/utils";
 
 import { LoadingSkeleton } from "../ui/loading-skeleton";
 
-const components: { title: string; href: string; description: string }[] = [
-  {
-    title: "Tim's Toys",
-    href: "/",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod lorem ipsum dolor sit amet.",
-  },
-  {
-    title: "James' Jackpots",
-    href: "/",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod lorem ipsum dolor sit amet.",
-  },
-  {
-    title: "Dave's Deals",
-    href: "/",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod lorem ipsum dolor sit amet.",
-  },
-  {
-    title: "Tim's Trainers",
-    href: "/",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod lorem ipsum dolor sit amet.",
-  },
-];
 type MenuItem = {
   name: string;
   slug: string;

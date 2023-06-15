@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { auth as getAuth } from "@clerk/nextjs/app-beta";
 import { ShoppingCart } from "lucide-react";
 import {
   SheetDescription,

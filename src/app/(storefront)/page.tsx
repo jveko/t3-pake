@@ -1,8 +1,7 @@
 "use client";
 
-import React, { PropsWithChildren } from "react";
+import React, { type PropsWithChildren } from "react";
 import Link from "next/link";
-import { Loader2 } from "lucide-react";
 import { ContentWrapper } from "~/components/content-wrapper";
 import { ProductCard } from "~/components/storefront/product-card";
 import { Button } from "~/components/ui/button";
@@ -27,8 +26,8 @@ export default function Home() {
           <Heading size="h3">Top Picks</Heading>
 
           <div className="grid grid-cols-1 gap-6 mt-2 overflow-auto md:grid-cols-2 lg:grid-cols-4">
-            {!isLoading
-              ? products!.map((x, i) => (
+            {!isLoading && products
+              ? products.map((x, i) => (
                   <ProductCard key={i} product={x}></ProductCard>
                 ))
               : Array.from(Array(4)).map((_, i) => (

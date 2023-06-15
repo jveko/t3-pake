@@ -1,12 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
-import { ImageOff } from "lucide-react";
 import { currencyFormatter } from "~/lib/currency";
 import { routes } from "~/lib/routes";
-import { Product } from "~/server/db/schema";
+import { type Product } from "~/server/db/schema";
 
 import { ProductImage } from "../product-image";
-import { Button } from "../ui/button";
 import { Text } from "../ui/text";
 
 // import { ProductForm } from "./product-form";

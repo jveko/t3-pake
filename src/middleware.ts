@@ -16,7 +16,7 @@ const isPublic = (reqPath: string) => {
     reqPath.match(new RegExp(`^${publicPath}$`.replace("*$", "($|/)")))
   );
 };
-
+console.log(process.env);
 export default withClerkMiddleware((request: NextRequest) => {
   if (isPublic(request.nextUrl.pathname)) {
     return NextResponse.next();

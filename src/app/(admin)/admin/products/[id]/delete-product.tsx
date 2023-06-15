@@ -17,12 +17,14 @@ import { api } from "~/lib/api/client";
 import { routesAdmin } from "~/lib/routes";
 
 export default function DeleteProduct({ id }: { id: number }) {
+  const apiCtx = api.useContext();
   const { toast } = useToast();
   const router = useRouter();
   const title = "Product";
   const { mutate: deleteProduct, isLoading } =
     api.product.deleteProduct.useMutation({
-      onSuccess(_, newData) {
+      async onSuccess(_) {
+        await apiCtx.product.getProducts.refetch();
         toast({
           title: "Success !!",
           description: `Delete ${title} is Success`,
@@ -57,7 +59,7 @@ export default function DeleteProduct({ id }: { id: number }) {
               }}
             >
               Sure
-              {isLoading && <Loader2 className="animate-spin ml-2 w-4" />}
+              {isLoading && <Loader2 className="w-4 ml-2 animate-spin" />}
             </Button>
           </DialogFooter>
         </DialogHeader>

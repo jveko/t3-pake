@@ -2,7 +2,7 @@ import { CollectionBody } from "~/components/storefront/collection-body";
 import { CollectionHeaderWrapper } from "~/components/storefront/collection-header-wrapper";
 import { CollectionPagePagination } from "~/components/storefront/collection-page-pagination";
 import { api } from "~/lib/api/server";
-import { Collection } from "~/server/db/schema";
+import { type Collection } from "~/server/db/schema";
 
 const PRODUCTS_PER_PAGE = 6;
 

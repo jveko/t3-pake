@@ -8,7 +8,12 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-import { Product, collections, products } from "~/server/db/schema";
+import {
+  collections,
+  products,
+  type Collection,
+  type Product,
+} from "~/server/db/schema";
 
 export const productRouter = createTRPCRouter({
   getProductsByFilter: publicProcedure
@@ -18,24 +23,27 @@ export const productRouter = createTRPCRouter({
       })
     )
     .query(async ({ input: i, ctx: { db } }) => {
-      var query = db.select().from(products);
+      let query = db.select().from(products);
       if (i.collectionId) {
         query = query.where(eq(products.collection_id, i.collectionId));
       }
       return (await query) as Product[];
     }),
-  getHome: publicProcedure.query(async ({ ctx: { db, user } }) => {
+  getHome: publicProcedure.query(async ({ ctx: { db } }) => {
     return (await db.select().from(products).limit(4)) as Product[];
   }),
-  getProducts: protectedProcedure.query(async ({ ctx: { db, user } }) => {
-    return await db
+  getProducts: protectedProcedure.query(async ({ ctx: { db } }) => {
+    return (await db
       .select()
       .from(products)
-      .leftJoin(collections, eq(collections.id, products.collection_id));
+      .leftJoin(collections, eq(collections.id, products.collection_id))) as {
+      products: Product;
+      collections: Collection;
+    }[];
   }),
   createProduct: protectedProcedure
     .input(createProductSchema)
-    .mutation(async ({ input, ctx: { auth, db, user } }) => {
+    .mutation(async ({ input, ctx: { db, user } }) => {
       const result = await db.insert(products).values({
         name: input.name,
         slug: slugify(input.name),
@@ -55,7 +63,7 @@ export const productRouter = createTRPCRouter({
         id: z.number(),
       })
     )
-    .query(async ({ input, ctx: { db, user } }) => {
+    .query(async ({ input, ctx: { db } }) => {
       const result = await db
         .select()
         .from(products)
@@ -72,7 +80,7 @@ export const productRouter = createTRPCRouter({
         slug: z.string().nullish().optional(),
       })
     )
-    .query(async ({ input, ctx: { db, user } }) => {
+    .query(async ({ input, ctx: { db } }) => {
       if (input.slug == null) return null;
       const result = await db
         .select()
@@ -86,7 +94,7 @@ export const productRouter = createTRPCRouter({
     }),
   editProduct: protectedProcedure
     .input(editProductSchema)
-    .mutation(async ({ input, ctx: { auth, db, user } }) => {
+    .mutation(async ({ input, ctx: { db, user } }) => {
       console.log(input);
       const result = await db
         .update(products)
@@ -109,7 +117,7 @@ export const productRouter = createTRPCRouter({
         id: z.number(),
       })
     )
-    .mutation(async ({ input: i, ctx: { auth, db, user } }) => {
+    .mutation(async ({ input: i, ctx: { db } }) => {
       // const product = await db
       //   .select({
       //     images: products.images,
@@ -139,12 +147,12 @@ export const productRouter = createTRPCRouter({
       })
     )
     .query(async ({ input: i, ctx: { db } }) => {
-      var query = db.select({ count: sql<number>`count(*)` }).from(products);
+      let query = db.select({ count: sql<number>`count(*)` }).from(products);
       if (i.collectionId) {
         query = query.where(eq(products.collection_id, i.collectionId));
       }
       const result = await query;
-      if (result.length > 0) return result[0]!.count;
+      if (result && result.length > 0 && result[0]) return result[0].count;
       return 0;
     }),
 });

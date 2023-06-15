@@ -1,21 +1,18 @@
 "use client";
 
-import React, { useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { ChevronDown, ChevronUp } from "lucide-react";
-import { Checkbox } from "~/components/ui/checkbox";
+import React from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
 import { api } from "~/lib/api/client";
-import { anchorTags, routes } from "~/lib/routes";
-import { Collection } from "~/server/db/schema";
+import { routes } from "~/lib/routes";
+import { type Collection } from "~/server/db/schema";
 
 import { Button } from "../ui/button";
 import { Heading } from "../ui/heading";
@@ -51,7 +48,7 @@ export const ProductSidebar = (props: {
             <Select
               defaultValue={props.collection?.slug}
               onValueChange={(value) => {
-                var arrRoute = [routes.products, "/", value];
+                const arrRoute = [routes.products, "/", value];
                 if (page) arrRoute.push(...["?", "page=", page]);
                 router.push(arrRoute.join(""));
               }}

@@ -9,8 +9,7 @@ import {
 } from "~/components/ui/table";
 import { currencyFormatter } from "~/lib/currency";
 import { routes } from "~/lib/routes";
-import { CartItem, CartLineItemDetails } from "~/lib/types";
-import { Cart, Product } from "~/server/db/schema";
+import { type Cart, type Product } from "~/server/db/schema";
 
 import { ProductImage } from "../product-image";
 import { Button } from "../ui/button";

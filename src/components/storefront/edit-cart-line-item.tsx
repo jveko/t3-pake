@@ -13,10 +13,8 @@ import {
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
 import { api } from "~/lib/api/client";
-import { CartItem, CartLineItemDetails } from "~/lib/types";
 import { handleInputQuantity } from "~/lib/utils";
-import { cartRouter } from "~/server/api/routers/cart";
-import { Cart, Product } from "~/server/db/schema";
+import { type Cart, type Product } from "~/server/db/schema";
 
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -31,22 +29,22 @@ export const EditCartLineItem = (props: { cart: Cart; product: Product }) => {
   const apiCtx = api.useContext();
   const { mutate: updateCart, isLoading: isLoadingUpdate } =
     api.cart.update.useMutation({
-      onSuccess() {
+      async onSuccess() {
         toast({
           title: "Cart updated",
           description: `${props.product.name} has been removed from your cart.`,
         });
-        apiCtx.cart.getCart.refetch();
+        await apiCtx.cart.getCart.refetch();
       },
     });
   const { mutate: removeCart, isLoading: isLoadingRemove } =
     api.cart.remove.useMutation({
-      onSuccess() {
+      async onSuccess() {
         toast({
           title: "Cart updated",
           description: `${props.product.name} has been removed from your cart.`,
         });
-        apiCtx.cart.getCart.refetch();
+        await apiCtx.cart.getCart.refetch();
       },
     });
   return (

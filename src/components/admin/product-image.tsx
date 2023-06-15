@@ -1,12 +1,12 @@
 import Image from "next/image";
-import { ImageOff, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { cn } from "~/lib/utils";
 
 import { Button } from "../ui/button";
 
 export const ProductImage = (props: {
   url: string;
-  delete: () => Promise<void>;
+  delete: () => void;
   height: `h-${string}`;
   width: `w-${string}`;
   isLoading: boolean;
@@ -25,6 +25,7 @@ export const ProductImage = (props: {
         className={cn("relative", "h-6", props.width)}
         variant={"outline"}
         onClick={props.delete}
+        type="button"
       >
         Delete
         {props.isLoading && <Loader2 className="animate-spin ml-2 w-4" />}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { api } from "~/lib/api/client";
 import { routes } from "~/lib/routes";
 import { handleInputQuantity } from "~/lib/utils";
@@ -21,17 +21,19 @@ export const ProductForm = (props: {
 
   const apiCtx = api.useContext();
   const { mutate: addCart, isLoading } = api.cart.add.useMutation({
-    onSuccess() {
+    async onSuccess() {
       toast({
         title: "Added to cart",
-        description: `${quantity}x ${props.productName} has been added to your cart.`,
+        description: `${quantity.toString()}x ${
+          props.productName as string
+        } has been added to your cart.`,
         action: (
           <a href={routes.cart}>
             <ToastAction altText="View cart">View</ToastAction>
           </a>
         ),
       });
-      apiCtx.cart.getCart.refetch();
+      await apiCtx.cart.getCart.refetch();
     },
   });
   return (

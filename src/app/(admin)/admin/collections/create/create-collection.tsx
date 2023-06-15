@@ -23,8 +23,8 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { api } from "~/lib/api/client";
-import { routes, routesAdmin } from "~/lib/routes";
-import { CollectionSelectable, type Collection } from "~/server/db/schema";
+import { routesAdmin } from "~/lib/routes";
+import { type CollectionSelectable } from "~/server/db/schema";
 
 export const createCollectionSchema = z.object({
   name: z.string().min(1),
@@ -43,6 +43,7 @@ export default function CreateCollection({
 }: {
   collections: CollectionSelectable[];
 }) {
+  const apiCtx = api.useContext();
   const form = useForm<CreateCollectionSchema>({
     resolver: zodResolver(createCollectionSchema),
     defaultValues: initialFormData,
@@ -56,7 +57,8 @@ export default function CreateCollection({
 
   const { mutate: createCollection, isLoading } =
     api.collection.createCollection.useMutation({
-      onSuccess() {
+      async onSuccess() {
+        await apiCtx.collection.getCollections.refetch();
         form.reset();
         router.push(routesAdmin.collections.home);
       },

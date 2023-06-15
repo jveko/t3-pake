@@ -9,7 +9,7 @@ export const imageRouter = createTRPCRouter({
         key: z.string().min(1),
       })
     )
-    .mutation(async ({ input, ctx: { db } }) => {
+    .mutation(async ({ input }) => {
       const { success } = await utapi.deleteFiles(input.key);
       return {
         success,

@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2, Lock } from "lucide-react";
 import { Button } from "~/components/ui/button";
-import { toast } from "~/components/ui/use-toast";
 
 export const CheckoutButton = () => {
   const [isLoading, setIsLoading] = useState(false);

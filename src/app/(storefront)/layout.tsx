@@ -16,7 +16,7 @@ export default async function StorefrontLayout({
 }: {
   children: React.ReactNode;
 }) {
-  var { userId } = auth();
+  const { userId } = auth();
   return (
     <div className="min-h-screen w-full flex flex-col">
       <NavBar isAdmin={await api.user.isAdmin.fetch({ externalId: userId })} />

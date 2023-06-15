@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { ImageOff } from "lucide-react";
 import { ProductImage } from "~/components/product-image";
@@ -15,15 +15,17 @@ export const ProductImageCarousel = (props: {
   if (props.images.length == 0 || props.images[0] == null) {
     return <ImageOff />;
   }
-  useEffect(() => {
-    if (props.images.length - 1 <= selectedIndex) {
-      setSelectedIndex(props.images.length - 1);
-    }
-  }, [selectedIndex, props.images]);
+  // if (selectedIndex != 0) {
+  //   // useEffect(() => {
+  //   //   if (props.images.length - 1 <= selectedIndex) {
+  //   //     setSelectedIndex(props.images.length - 1);
+  //   //   }
+  //   // }, [selectedIndex, props.images]);
+  // }
   return (
     <>
       <ProductImage
-        url={props.images[selectedIndex]!.fileUrl}
+        url={props.images[selectedIndex]?.fileUrl}
         height="h-96"
         width="w-full"
       ></ProductImage>

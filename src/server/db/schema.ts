@@ -1,6 +1,5 @@
-import { InferModel } from "drizzle-orm";
+import { type InferModel } from "drizzle-orm";
 import {
-  AnyMySqlColumn,
   boolean,
   decimal,
   int,
@@ -80,6 +79,7 @@ export const products = mysqlTable(
     };
   }
 );
+// export type Product = InferModel<typeof products>
 export type Product = {
   [K in keyof InferModel<typeof products>]: K extends "images"
     ? {
@@ -105,3 +105,16 @@ export const carts = mysqlTable(
   }
 );
 export type Cart = InferModel<typeof carts>;
+
+export const orders = mysqlTable("orders", {
+  id: serial("id").primaryKey(),
+  owner_id: int("owner_id").notNull(),
+  qty: int("qty").notNull(),
+});
+
+export const orderItems = mysqlTable("order_items", {
+  id: serial("id").primaryKey(),
+  owner_id: int("owner_id").notNull(),
+  qty: int("qty").notNull(),
+});
+export type Orders = InferModel<typeof orders>;

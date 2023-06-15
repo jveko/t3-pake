@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { Cart, Product, carts, products } from "~/server/db/schema";
+import { carts, products, type Cart, type Product } from "~/server/db/schema";
 
 export const cartRouter = createTRPCRouter({
   add: protectedProcedure
@@ -11,7 +11,7 @@ export const cartRouter = createTRPCRouter({
         qty: z.number(),
       })
     )
-    .mutation(async ({ input, ctx: { auth, db, user } }) => {
+    .mutation(async ({ input, ctx: { db, user } }) => {
       const cart = await db
         .select()
         .from(carts)
@@ -44,7 +44,7 @@ export const cartRouter = createTRPCRouter({
         qty: z.number(),
       })
     )
-    .mutation(async ({ input, ctx: { auth, db, user } }) => {
+    .mutation(async ({ input, ctx: { db } }) => {
       const cart = await db.select().from(carts).where(eq(carts.id, input.id));
       if (cart.length == 0 || cart[0] == null) {
         return;
@@ -63,10 +63,10 @@ export const cartRouter = createTRPCRouter({
         id: z.number(),
       })
     )
-    .mutation(async ({ input, ctx: { auth, db, user } }) => {
+    .mutation(async ({ input, ctx: { db } }) => {
       await db.delete(carts).where(eq(carts.id, input.id));
     }),
-  getCart: protectedProcedure.query(async ({ ctx: { auth, db, user } }) => {
+  getCart: protectedProcedure.query(async ({ ctx: { db, user } }) => {
     return (await db
       .select()
       .from(carts)

@@ -1,10 +1,5 @@
-import { desc, eq } from "drizzle-orm";
-import { z } from "zod";
-import { slugify } from "~/lib/utils";
 import {
   createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
 } from "~/server/api/trpc";
 
 export const exampleRouter = createTRPCRouter({

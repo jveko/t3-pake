@@ -1,16 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UploadButton } from "@uploadthing/react";
 import { Loader2 } from "lucide-react";
 import { useForm, type DefaultValues } from "react-hook-form";
-import { utapi } from "uploadthing/server";
 import { z } from "zod";
-import { OurFileRouter } from "~/app/api/uploadthing/core";
+import { type OurFileRouter } from "~/app/api/uploadthing/core";
 import { ProductImage } from "~/components/admin/product-image";
-import { P } from "~/components/typography";
 import { Button } from "~/components/ui/button";
 import {
   Form,
@@ -30,8 +27,8 @@ import {
 } from "~/components/ui/select";
 import { Textarea } from "~/components/ui/textarea";
 import { api } from "~/lib/api/client";
-import { routes, routesAdmin } from "~/lib/routes";
-import { CollectionSelectable, type Collection } from "~/server/db/schema";
+import { routesAdmin } from "~/lib/routes";
+import { type CollectionSelectable } from "~/server/db/schema";
 
 export const createProductSchema = z.object({
   name: z.string().min(1),
@@ -65,6 +62,7 @@ export default function CreateProduct({
 }: {
   collections: CollectionSelectable[];
 }) {
+  const apiCtx = api.useContext();
   const form = useForm<CreateProductSchema>({
     resolver: zodResolver(createProductSchema),
     defaultValues: initialFormData,
@@ -78,7 +76,8 @@ export default function CreateProduct({
 
   const { mutate: createProduct, isLoading } =
     api.product.createProduct.useMutation({
-      onSuccess() {
+      async onSuccess() {
+        await apiCtx.product.getProducts.refetch();
         form.reset();
         router.push(routesAdmin.products.home);
       },
@@ -179,10 +178,11 @@ export default function CreateProduct({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Images</FormLabel>
-                {form.getValues("images").map((x) => (
+                {form.getValues("images").map((x, i) => (
                   <ProductImage
+                    key={i}
                     url={x.fileUrl}
-                    delete={async () => {
+                    delete={() => {
                       deleteImage({ key: x.fileKey });
                     }}
                     height="h-48"

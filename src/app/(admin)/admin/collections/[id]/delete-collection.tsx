@@ -17,12 +17,14 @@ import { api } from "~/lib/api/client";
 import { routesAdmin } from "~/lib/routes";
 
 export default function DeleteCollection({ id }: { id: number }) {
+  const apiCtx = api.useContext();
   const { toast } = useToast();
   const router = useRouter();
 
   const { mutate: deleteCollection, isLoading } =
     api.collection.deleteCollection.useMutation({
-      onSuccess(_, newData) {
+      async onSuccess(_) {
+        await apiCtx.collection.getCollections.refetch();
         toast({
           title: "Success !!",
           description: "Delete Collection is Success",

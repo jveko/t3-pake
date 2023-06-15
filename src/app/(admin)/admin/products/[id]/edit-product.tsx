@@ -4,9 +4,9 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UploadButton } from "@uploadthing/react";
 import { Loader2 } from "lucide-react";
-import { useForm, type DefaultValues } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { OurFileRouter } from "~/app/api/uploadthing/core";
+import { type OurFileRouter } from "~/app/api/uploadthing/core";
 import { ProductImage } from "~/components/admin/product-image";
 import { Button } from "~/components/ui/button";
 import {
@@ -28,11 +28,7 @@ import {
 import { Textarea } from "~/components/ui/textarea";
 import { api } from "~/lib/api/client";
 import { routesAdmin } from "~/lib/routes";
-import {
-  CollectionSelectable,
-  Product,
-  type Collection,
-} from "~/server/db/schema";
+import { type CollectionSelectable, type Product } from "~/server/db/schema";
 
 export const editProductSchema = z.object({
   id: z.number(),
@@ -60,6 +56,7 @@ export default function EditProduct({
   data: Product;
   collections: CollectionSelectable[];
 }) {
+  const apiCtx = api.useContext();
   const form = useForm<EditProductSchema>({
     resolver: zodResolver(editProductSchema),
     defaultValues: {
@@ -69,14 +66,15 @@ export default function EditProduct({
       price: Number(data.price),
       description: data.description,
       collectionId: data.collection_id.toString(),
-      images: data.images as { fileUrL: string; fileKey: string }[],
+      images: data.images,
     },
   });
   const router = useRouter();
 
   const { mutate: editProduct, isLoading } =
     api.product.editProduct.useMutation({
-      onSuccess(_, newData) {
+      async onSuccess(_, newData) {
+        await apiCtx.product.getProducts.refetch();
         form.reset(newData);
         router.push(routesAdmin.products.home);
       },
@@ -182,13 +180,14 @@ export default function EditProduct({
           <FormField
             control={form.control}
             name="images"
-            render={({ field }) => (
+            render={({}) => (
               <FormItem>
                 <FormLabel>Images</FormLabel>
-                {form.getValues("images").map((x) => (
+                {form.getValues("images").map((x, i) => (
                   <ProductImage
+                    key={i}
                     url={x.fileUrl}
-                    delete={async () => {
+                    delete={() => {
                       deleteImage({ key: x.fileKey });
                     }}
                     height="h-48"

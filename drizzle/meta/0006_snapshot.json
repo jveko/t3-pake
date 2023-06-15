@@ -106,9 +106,7 @@
       "indexes": {
         "collections_slug_idx": {
           "name": "collections_slug_idx",
-          "columns": [
-            "slug"
-          ],
+          "columns": ["slug"],
           "isUnique": true
         }
       },
@@ -210,9 +208,7 @@
       "indexes": {
         "products_slug_idx": {
           "name": "products_slug_idx",
-          "columns": [
-            "slug"
-          ],
+          "columns": ["slug"],
           "isUnique": true
         }
       },
@@ -280,9 +276,7 @@
       "indexes": {
         "users_external_id_idx": {
           "name": "users_external_id_idx",
-          "columns": [
-            "external_id"
-          ],
+          "columns": ["external_id"],
           "isUnique": true
         }
       },

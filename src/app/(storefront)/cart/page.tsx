@@ -1,11 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronRight, Loader2 } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { CartLineItems } from "~/components/storefront/cart-line-items";
 import { Button } from "~/components/ui/button";
 import { Heading } from "~/components/ui/heading";
-import { LoadingSkeleton } from "~/components/ui/loading-skeleton";
 import { api } from "~/lib/api/client";
 import { currencyFormatter } from "~/lib/currency";
 import { routes } from "~/lib/routes";

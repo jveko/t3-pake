@@ -1,11 +1,8 @@
 import "../../../styles/globals.css";
 import React from "react";
-import { auth, currentUser } from "@clerk/nextjs/app-beta";
-import { ContentWrapper } from "~/components/content-wrapper";
+import { auth } from "@clerk/nextjs/app-beta";
 import { Footer } from "~/components/footer";
-import { Line } from "~/components/line";
 import { NavbarAdmin } from "~/components/navbar-admin";
-import { Heading } from "~/components/ui/heading";
 import { api } from "~/lib/api/server";
 
 export const metadata = {
